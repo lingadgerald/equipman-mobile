@@ -1,0 +1,31 @@
+<ion-view view-title="Equipman" id="login" hide-back-button="true">
+	<ion-content padding="true">
+		
+		<form ng-submit="vm.handleLogin()">
+			<div class="logo text-center">
+				<img src="img/equipman.png" alt="Equipman" width="50%">
+				<p>A multi-platform equipment tracker and inventory system</p>
+			</div>
+
+			<fieldset class="login-form" ng-disabled="vm.isLoading">
+				<formly-form
+					form="vm.form"
+					model="vm.model"
+					fields="vm.fields"
+					options="vm.options"
+				>
+					<div class="login-submit">
+						<button
+							type="submit"
+							class="button button-positive button-block"
+							ng-disabled="vm.isLoading"
+						>
+							Log in
+						</button>
+					</div>
+				</formly-form>
+			</fieldset>
+		</form>
+
+	</ion-content>
+</ion-view>

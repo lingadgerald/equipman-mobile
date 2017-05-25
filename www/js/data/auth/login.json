@@ -1,0 +1,26 @@
+{
+	"fields": [
+		{
+			"key": "login",
+			"type": "input",
+			"templateOptions": {
+				"type": "email",
+				"label": "Email Address",
+				"placeholder": "Email Address",
+    		"icon": "ion-person",
+    		"iconPlaceholder": true
+    	}
+		},
+		{
+			"key": "password",
+			"type": "input",
+			"templateOptions": {
+				"type": "password",
+				"label": "Password",
+				"placeholder": "Password",
+    		"icon": "ion-locked",
+    		"iconPlaceholder": true
+    	}
+		}
+	]
+}

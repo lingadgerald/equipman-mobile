@@ -1,0 +1,55 @@
+{
+	"name": "edit_profile",
+	"heading": "Edit Profile",
+	"model": "member",
+	"formFields": [
+		{
+			"key": "firstname",
+			"type": "input",
+			"templateOptions": {
+				"type": "text",
+				"label": "First Name",
+				"placeholder": "First Name",
+    		"icon": "ion-person",
+    		"iconPlaceholder": true,
+				"required": true
+			}
+		},
+		{
+			"key": "lastname",
+			"type": "input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Last Name",
+				"placeholder": "Last Name",
+    		"icon": "ion-person",
+    		"iconPlaceholder": true,
+				"required": true
+			}
+		},
+		{
+			"key": "email",
+			"type": "input",
+			"templateOptions": {
+				"type": "email",
+				"label": "Email Address",
+				"placeholder": "Email Address",
+    		"icon": "ion-email",
+    		"iconPlaceholder": true,
+				"disabled": true
+			}
+		},
+		{
+			"key": "ministry.name",
+			"type": "input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Ministry",
+				"placeholder": "Ministry",
+    		"icon": "ion-ios-home",
+    		"iconPlaceholder": true,
+				"disabled": true
+			}
+		}
+	]
+}

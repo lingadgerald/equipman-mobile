@@ -1,0 +1,17 @@
+{
+	"heading": "Events",
+	"model": "event",
+	"hideBackButton": true,
+	"subState": "app.tabs.events.ministries",
+	"listFields": [
+		{"label": "Name", "model": "name"},
+		{"label": "Date", "model": "eventDate", "type": "date"}
+	],
+	"sortFields": [
+		{"label": "Default", "model": "created"},
+		{"label": "Name", "model": "name"},
+		{"label": "Location", "model": "location"},
+		{"label": "Date", "model": "eventDate"},
+		{"label": "Description", "model": "description"}
+	]
+}

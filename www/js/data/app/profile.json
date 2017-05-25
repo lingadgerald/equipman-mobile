@@ -1,0 +1,59 @@
+{
+	"heading": "Profile",
+	"model": "member",
+	"hideBackButton": true,
+	"profileMenu": [
+		{
+			"label": "Edit Profile",
+			"model": "editProfile",
+			"state": "app.tabs.profile.editProfile",
+			"icon": "ion-person",
+			"iconAndroid": "ion-android-person",
+			"iconIos": "ion-ios-person"
+		},
+		{
+			"label": "Change Password",
+			"model": "changePassword",
+			"state": "app.tabs.profile.changePassword",
+			"icon": "ion-locked",
+			"iconAndroid": "ion-android-lock",
+			"iconIos": "ion-ios-locked"
+		},
+		{
+			"label": "Log out",
+			"model": "logout",
+			"icon": "ion-log-out"
+		}
+	],
+	"formFields": [
+		{
+			"key": "name",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Name",
+				"placeholder": "Name",
+				"required": true
+			}
+		},
+		{
+			"key": "email",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "email",
+				"label": "Email",
+				"placeholder": "Email",
+				"required": true
+			}
+		},
+		{
+			"key": "ministry.name",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Ministry",
+				"placeholder": "Ministry"
+			}
+		}
+	]
+}

@@ -1,0 +1,101 @@
+{
+	"heading": "Event Items",
+	"model": "event_item",
+	"subState": "app.tabs.events.ministries.items.checked.details",
+	"loadRelations": "event,item,item.ministry,item.ownerMinistry,item.ownerMember",
+	"listFields": [
+		{"label": "Name", "model": "item.name"},
+		{"label": "Ministry", "model": "item.ministry.name"}
+	],
+	"formFields": [
+		{
+			"key": "name",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Name",
+				"placeholder": "Name",
+				"required": true
+			}
+		},
+		{
+			"key": "itemId",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Item Id",
+				"placeholder": "Item Id",
+				"required": true
+			}
+		},
+		{
+			"key": "image",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Image",
+				"placeholder": "Image"
+			}
+		},
+		{
+			"key": "ministry.name",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Ministry",
+				"placeholder": "Ministry"
+			}
+		},
+		{
+			"key": "ownerVal",
+			"type": "select",
+			"templateOptions": {
+				"label": "Owner Type",
+				"options": [
+					{"name": "Ministry", "value": "ministry"},
+					{"name": "Member", "value": "member"}
+				],
+				"required": true
+			},
+			"hideExpression": "!!model.ownerVal"
+		},
+		{
+			"key": "ownerMember.name",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Owner",
+				"placeholder": "Owner"
+			},
+			"hideExpression": "!(model.ownerVal === 'member')"
+		},
+		{
+			"key": "ownerMinistry.name",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Owner",
+				"placeholder": "Owner"
+			},
+			"hideExpression": "!(model.ownerVal === 'ministry')"
+		},
+		{
+			"key": "condition",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Condition",
+				"placeholder": "Condition"
+			}
+		},
+		{
+			"key": "description",
+			"type": "inline-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Description",
+				"placeholder": "Description"
+			}
+		}
+	]
+}

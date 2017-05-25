@@ -1,0 +1,9 @@
+{
+  "name": "angularjs-camelCase-human",
+  "main": "camelcase-browser.js",
+  "author": "John Dennis Pedrie",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1"
+  }
+}

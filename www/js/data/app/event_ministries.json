@@ -1,0 +1,20 @@
+{
+	"heading": "Ministries",
+	"model": "ministry",
+	"subState": "app.tabs.events.ministries.items.checked",
+	"loadRelations": "headPerson",
+	"hasSubheader": true,
+	"headerButtons": {
+		"secondary": {
+			"label": "Attendance",
+			"icon": "ion-person-stalker",
+			"iconAndroid": "ion-android-people",
+			"iconIos": "ion-ios-people",
+			"state": "app.tabs.events.attendance"
+		}
+	},
+	"listFields": [
+		{"label": "Name", "model": "name"},
+		{"label": "Head Person", "model": "headPerson.name"}
+	]
+}

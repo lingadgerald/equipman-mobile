@@ -1,0 +1,8 @@
+{
+	"heading": "Attendance",
+	"model": "member",
+	"listFields": [
+		{"label": "Name", "model": "name"},
+		{"label": "Email Address", "model": "email"}
+	]
+}

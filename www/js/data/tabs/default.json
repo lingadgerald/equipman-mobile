@@ -1,0 +1,32 @@
+{
+	"tabs": {
+		"event": {
+			"title": "Events",
+			"icon": "ion-calendar",
+			"iconOnAndroid": "ion-android-calendar",
+			"iconOffAndroid": "ion-android-calendar",
+			"iconOnIos": "ion-ios-calendar",
+			"iconOffIos": "ion-ios-calendar-outline",
+			"href": "#/events",
+			"name": "events"
+		},
+		"item": {
+			"title": "Items",
+			"icon": "ion-bag",
+			"iconOnIos": "ion-ios-box",
+			"iconOffIos": "ion-ios-box-outline",
+			"href": "#/ministries",
+			"name": "items"
+		},
+		"profile": {
+			"title": "Profile",
+			"icon": "ion-person",
+			"iconOnAndroid": "ion-android-person",
+			"iconOffAndroid": "ion-android-person",
+			"iconOnIos": "ion-ios-person",
+			"iconOffIos": "ion-ios-person-outline",
+			"href": "#/profile",
+			"name": "profile"
+		}
+	}
+}

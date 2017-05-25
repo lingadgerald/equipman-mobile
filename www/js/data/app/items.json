@@ -1,0 +1,147 @@
+{
+	"heading": "Items",
+	"model": "item",
+	"subState": "app.tabs.ministries.items.details",
+	"loadRelations": "ministry,ownerMinistry,ownerMember",
+	"hasSubheader": true,
+	"listFields": [
+		{"label": "Name", "model": "name", "textType": "head"},
+		{"label": "Ministry", "model": "ownerVal", "type": "owner", "textType": "subhead"},
+		{"label": "Image", "model": "image", "type": "image"}
+	],
+	"sortFields": [
+		{"label": "Default", "model": "created"},
+		{"label": "Item Id", "model": "itemId"},
+		{"label": "Name", "model": "name"},
+		{"label": "Condition", "model": "condition"},
+		{"label": "Description", "model": "description"}
+	],
+	"formFields": [
+		{
+			"key": "image",
+			"type": "image-input",
+			"templateOptions": {
+				"label": "Image",
+				"placeholder": "Image"
+			}
+		},
+		{
+			"key": "name",
+			"type": "stacked-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Name",
+				"placeholder": "Name",
+				"required": true
+			},
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.readOnly"
+			}
+		},
+		{
+			"key": "itemId",
+			"type": "stacked-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Item Id",
+				"placeholder": "Item Id"
+			},
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.readOnly"
+			}
+		},
+		{
+			"key": "ministry",
+			"type": "select-popup",
+			"templateOptions": {
+				"label": "Ministry",
+				"options": [],
+				"optionProperties": {
+					"resource": "data.ministry",
+					"conditions": {
+						"where": "deleted is null"
+					}
+				}
+			},
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.role === 'user'"
+			}
+		},
+		{
+			"key": "ownerVal",
+			"type": "select-popup",
+			"templateOptions": {
+				"label": "Owner Type",
+				"options": [
+					{"name": "Ministry", "value": "ministry"},
+					{"name": "Member", "value": "member"}
+				],
+				"required": true
+			},
+			"hideExpression": "(formState.action !== 'add' || formState.role === 'user')",
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.role === 'user'"
+			}
+		},
+		{
+			"key": "ownerMember",
+			"type": "select-popup",
+			"templateOptions": {
+				"label": "Owner",
+				"options": [],
+				"optionProperties": {
+					"resource": "data.member",
+					"conditions": {
+						"where": "deleted is null"
+					}
+				}
+			},
+			"hideExpression": "!(model.ownerVal === 'member')",
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.role === 'user'"
+			}
+		},
+		{
+			"key": "ownerMinistry",
+			"type": "select-popup",
+			"templateOptions": {
+				"label": "Owner",
+				"options": [],
+				"optionProperties": {
+					"resource": "data.ministry",
+					"conditions": {
+						"where": "deleted is null"
+					}
+				}
+			},
+			"hideExpression": "!(model.ownerVal === 'ministry')",
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.role === 'user'"
+			}
+		},
+		{
+			"key": "condition",
+			"type": "stacked-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Condition",
+				"placeholder": "Condition"
+			},
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.readOnly"
+			}
+		},
+		{
+			"key": "description",
+			"type": "stacked-input",
+			"templateOptions": {
+				"type": "text",
+				"label": "Description",
+				"placeholder": "Description"
+			},
+			"expressionProperties": {
+				"templateOptions.disabled": "formState.readOnly"
+			}
+		}
+	]
+}

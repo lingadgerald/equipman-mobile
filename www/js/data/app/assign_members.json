@@ -1,0 +1,8 @@
+{
+	"heading": "Assign a member",
+	"model": "member",
+	"listFields": [
+		{"label": "Name", "model": "name"},
+		{"label": "Email Address", "model": "email"}
+	]
+}

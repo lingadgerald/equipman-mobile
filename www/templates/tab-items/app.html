@@ -1,0 +1,40 @@
+<ion-view view-title="Ministries">
+  <ion-nav-buttons side="primary">
+    <button
+      class="button button-positive icon ion-plus"
+      ng-click="vm.handleOpenModal()"
+    ></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="secondary">
+    <button
+      class="button button-positive icon ion-android-funnel"
+      ng-click="vm.handleOnFilter()"
+    ></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="vm.handleOnRefresh()"
+    ></ion-refresher>
+
+    <ion-list>
+      <ion-item
+        class="item-icon-right"
+        collection-repeat="item in vm.list"
+        collection-item-width="'100%'"
+        collection-item-height="vm.getItemHeight(item, $index)"
+        ui-sref="tab.ministry-items({ ministryId: item.id })"
+        ng-style="{ height: getItemHeight(item, $index) }"
+      >
+        <h2>{{item.title}}</h2>
+        <p>{{item.description}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll
+      on-infinite="vm.handleOnInfiniteScroll()"
+      distance="1%"
+    ></ion-infinite-scroll>
+  </ion-content>
+</ion-view>

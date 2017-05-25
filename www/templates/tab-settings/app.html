@@ -1,0 +1,14 @@
+<ion-view view-title="Settings" hide-back-button="true">
+  <ion-content>
+    <ion-list>
+	    <ion-item
+        href=""
+        class="item-icon-left"
+        collection-repeat="menu in vm.menuList"
+        ng-click="vm.handleItemClicked(menu)"
+      >
+        <i class="icon icon-sm {{menu.icon}}"></i> {{menu.label}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

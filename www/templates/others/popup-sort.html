@@ -1,0 +1,13 @@
+<ion-scroll style="height: 165px;">
+	<ion-list>
+		<ion-radio
+			collection-repeat="item in sortItems"
+			collection-item-width="'100%'"
+			collection-item-height="'55'"
+			ng-model="data.sortBy"
+			ng-value="item.model"
+		>
+			{{item.title}}
+		</ion-radio>
+	</ion-list>
+</ion-scroll>
