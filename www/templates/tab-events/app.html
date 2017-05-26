@@ -24,7 +24,7 @@
       	collection-repeat="item in vm.list"
         collection-item-width="'100%'"
         collection-item-height="vm.getItemHeight(item, $index)"
-      	ui-sref="tab.event-ministries({ eventId: item.code })"
+      	ui-sref="tab.events.ministries({ eventId: item.objectId })"
         ng-style="{ height: getItemHeight(item, $index) }"
       >
         <h2>{{item.name}}</h2>
@@ -33,7 +33,7 @@
       </ion-item>
       <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">
         No events
-      </div>
+      </ion-item>
     </ion-list>
 
     <ion-infinite-scroll

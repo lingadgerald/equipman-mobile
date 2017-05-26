@@ -1,0 +1,26 @@
+<ion-view view-title="Add Item">
+  <ion-nav-buttons side="primary" class="has-header">
+    <button
+      class="button button-clear"
+      ng-click="vm.handleOnCancel()"
+    >
+      Cancel
+    </button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+
+    <form ng-submit="vm.handleOnSubmit()" style="height: 100%;">
+      <formly-form
+        form="vm.form"
+        model="vm.model"
+        fields="vm.fields"
+        options="vm.options"
+      >
+        <div class="padding-horizontal">
+          <button type="submit" class="button button-positive button-block">Add Item</button>
+        </div>
+      </formly-form>
+    </form>
+
+  </ion-content>
+</ion-view>

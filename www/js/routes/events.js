@@ -10,26 +10,26 @@
 			ministry: {
 				url 	: '/:eventId/ministries',
 				views : {
-					'tab-events': {
+					'tab-events@tab': {
 						templateUrl: baseUrl + '/ministries.html',
-						// controller : 'EventMinistriesCtrl as vm'
+						controller : 'EventMinistriesCtrl as vm'
 					}
 				}
 			},
 			ministryItem: {
-				url 	: '/events/:eventId/ministries/:ministryId/items',
+				url 	: '/:ministryId/items',
 				views : {
-					'tab-events': {
+					'tab-events@tab': {
 						templateUrl: baseUrl + '/checked-items.html',
-						// controller : 'CheckedItemsCtrl as vm'
+						controller : 'CheckedItemsCtrl as vm'
 					}
 				}
 			}
 		};
 
 		$stateProvider
-			.state('tab.event-ministries', events.ministry)
-			.state('tab.event-ministry-items', events.ministryItem)
+			.state('tab.events.ministries', events.ministry)
+			.state('tab.events.ministries.items', events.ministryItem)
 		;
 	}
 })(angular);

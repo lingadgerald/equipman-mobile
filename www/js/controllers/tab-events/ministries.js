@@ -1,47 +1,71 @@
 (function (ng) {
 	'use strict';
 
-	ng.module('controllers').controller('TabItemCtrl', TabItemCtrl);
+	ng.module('controllers').controller('EventMinistriesCtrl', EventMinistriesCtrl);
 
-	TabItemCtrl.$inject = [
+	EventMinistriesCtrl.$inject = [
 		'$ionicPopup',
 		'$rootScope',
+		'$stateParams',
 		'$scope',
+		'Event',
 		'Ministry'
 	];
-	function TabItemCtrl(
+	function EventMinistriesCtrl(
 		$ionicPopup,
 		$rootScope,
+		$stateParams,
 		$scope,
+		Event,
 		Ministry
 	) {
 		var vm = this;
 		vm.$ionicPopup = $ionicPopup;
 		vm.$rootScope = $rootScope;
+		vm.$stateParams = $stateParams;
 		vm.$scope = $scope;
+		vm.Event = Event;
 		vm.Ministry = Ministry;
 
+		vm.event = {};
 		vm.list = [];
-		vm.loadMoreData = true;
+		vm.loadMoreData = false;
 		vm.sortReversed = false;
 		vm.conditions = {
 			pageSize: 0,
 			offset: 0,
 			where: 'deleted is null',
 			sortBy: 'created desc'
-		}
+		};
 		vm.sortItems = [
 			{title: 'Default', model: 'created'},
 			{title: 'Name', model: 'name'},
 			{title: 'Description', model: 'description'}
 		];
+
+		vm.init(vm);
 	}
 
-	TabItemCtrl.prototype.getItemHeight = function(item, index) {
+	EventMinistriesCtrl.prototype.init = function(vm) {
+		vm.$rootScope.$broadcast('loading:show');
+		vm.Event.get(vm.$stateParams.eventId).then((res) => {
+			vm.event = res;
+			vm.loadMoreData = true;
+		}).catch((err) => {
+			vm.$ionicPopup.alert({
+				title: 'Something went wrong!',
+				template: 'Please try again later'
+			});
+		}).finally(() => {
+			vm.$rootScope.$broadcast('loading:hide');
+		});
+	};
+
+	EventMinistriesCtrl.prototype.getItemHeight = function(item, index) {
 		return 75;
 	};
 
-	TabItemCtrl.prototype.handleOnRefresh = function() {
+	EventMinistriesCtrl.prototype.handleOnRefresh = function() {
 		console.log('handleOnRefresh');
 		var vm = this;
 		vm.loadMoreData = true;
@@ -65,7 +89,7 @@
 		});
 	};
 
-	TabItemCtrl.prototype.handleOnInfiniteScroll = function() {
+	EventMinistriesCtrl.prototype.handleOnInfiniteScroll = function() {
 		console.log('handleOnInfiniteScroll');
 		var vm = this;
 		vm.Ministry.all(vm.conditions).then((res) => {
@@ -86,12 +110,12 @@
 		});
 	};
 
-	TabItemCtrl.prototype.handleOptionGetter = function(option) {
+	EventMinistriesCtrl.prototype.handleOptionGetter = function(option) {
 		var vm = this;
 		return option.model + ' ' + (!vm.sortReversed ? 'asc' : 'desc');
 	};
 
-	TabItemCtrl.prototype.handleOnSort = function() {
+	EventMinistriesCtrl.prototype.handleOnSort = function() {
 		var vm = this;
 		vm.sortReversed = !vm.sortReversed;
 		vm.conditions.pageSize = 0;

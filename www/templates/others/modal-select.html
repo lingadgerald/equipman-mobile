@@ -1,0 +1,18 @@
+<ion-item class="item-input item-button-right">
+	<span class="input-label">{{to.label}}</span>
+	<button
+		class="button button-light"
+		modal-select
+		modal-title="Select {{to.label}}"
+		ng-model="model[options.key]"
+		options="to.options"
+		option-property="{{to.valueProp || 'value'}}"
+	>
+		<span style="margin-right: 10px;">
+			<span>{{vm.getLabel()}}</span>
+		</span>
+		<i class="icon icon-sm ion-android-arrow-dropdown"></i>
+
+		<div class="option">{{option[to.labelProp || 'name']}}</div>
+	</button>
+</ion-item>

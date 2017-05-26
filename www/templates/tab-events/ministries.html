@@ -3,7 +3,7 @@
     <button
       class="button button-positive icon ion-android-funnel"
       modal-select
-      modal-title="Sort events by"
+      modal-title="Sort ministries by"
       ng-model="vm.conditions.sortBy"
       options="vm.sortItems"
       option-getter="vm.handleOptionGetter(option)"
@@ -12,7 +12,37 @@
       <div class="option">{{option.title}}</div>
     </button>
   </ion-nav-buttons>
-  <ion-content class="has-header">
-    <h2 class="title">Event Ministries</h2>
+  <div class="bar bar-subheader bar-stable">
+    <h2 class="title" style="text-align: left;">{{vm.event.name}}</h2>
+  </div>
+  <ion-content class="has-header has-subheader">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="vm.handleOnRefresh()"
+    ></ion-refresher>
+
+    <ion-list>
+      <ion-item
+        class="item-icon-right"
+        collection-repeat="item in vm.list"
+        collection-item-width="'100%'"
+        collection-item-height="vm.getItemHeight(item, $index)"
+        ui-sref="tab.events.ministries.items({ ministryId: item.objectId })"
+        ng-style="{ height: getItemHeight(item, $index) }"
+      >
+        <h2>{{item.name}}</h2>
+        <p>{{item.description}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">
+        No event ministries
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll
+      ng-if="vm.loadMoreData"
+      on-infinite="vm.handleOnInfiniteScroll()"
+      distance="1%"
+    ></ion-infinite-scroll>
   </ion-content>
 </ion-view>

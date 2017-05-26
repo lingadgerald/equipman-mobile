@@ -5,22 +5,9 @@
 
 	Event.$inject = ['$q', '$http', 'Backendless'];
 	function Event($q, $http, Backendless) {
-		var events = [];
-
-		var promiser = (promise) => {
-			promise.success = (res) => {
-				promise.then(res);
-				return promise;
-			};
-			promise.error = (err) => {
-				promise.then(null, err);
-				return promise;
-			};
-			return promise;
-		};
 		
 		return {
-			all: function(params) {
+			all: (params) => {
 				var deferred = $q.defer();
 				var promise = deferred.promise;
 				if (params == null) { params = {}; }
@@ -28,13 +15,30 @@
 					(res) => deferred.resolve(res),
 					(err) => deferred.reject(err)
 				);
-				return promiser(promise);
+				return promise;
 			},
-			get: function(eventId) {
-				return events.find(function(event) {
-					return event.id === parseInt(eventId);
-				});
+			get: (id, params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				Backendless.request('data.event@get@' + id, params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
+			},
+			getBy: (model, data, params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				params.where = 'deleted is null and ' + model + '=\'' + data + '\'';
+				Backendless.request('data.event@get', params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
 			}
 		};
+
 	}
 })(angular);

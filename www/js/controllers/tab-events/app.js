@@ -4,22 +4,23 @@
 	ng.module('controllers').controller('TabEventCtrl', TabEventCtrl);
 
 	TabEventCtrl.$inject = [
-		'Event',
 		'$ionicPopup',
 		'$rootScope',
-		'$scope'
+		'$scope',
+		'Event'
 	];
 	function TabEventCtrl(
-		Event,
 		$ionicPopup,
 		$rootScope,
-		$scope
+		$scope,
+		Event
 	) {
 		var vm = this;
-		vm.Event = Event;
 		vm.$ionicPopup = $ionicPopup;
 		vm.$rootScope = $rootScope;
 		vm.$scope = $scope;
+		vm.Event = Event;
+
 		vm.list = [];
 		vm.loadMoreData = true;
 		vm.sortReversed = false;
@@ -29,7 +30,7 @@
 			where: 'deleted is null',
 			sortBy: 'created desc'
 		};
-		vm.sortItems =[
+		vm.sortItems = [
 			{title: 'Default', model: 'created'},
 			{title: 'Name', model: 'name'},
 			{title: 'Location', model: 'location'},
@@ -69,7 +70,6 @@
 	TabEventCtrl.prototype.handleOnInfiniteScroll = function() {
 		console.log('handleOnInfiniteScroll');
 		var vm = this;
-		console.log(vm.conditions, vm.list);
 		vm.Event.all(vm.conditions).then((res) => {
 			ng.forEach(res.data, (val) => vm.list.push(val));
 			if (res.totalObjects !== vm.list.length) {

@@ -3,23 +3,42 @@
 
 	ng.module('services').factory('Ministry', Ministry);
 
-	Ministry.$inject = [];
-	function Ministry() {
-		var ministries = [
-			{id: 0, title: 'Sample', description: 'Sample Ministry'},
-			{id: 1, title: 'Music', description: 'Music Ministry'},
-			{id: 2, title: 'Training', description: 'Training Ministry'}
-		];
+	Ministry.$inject = ['$q', '$http', 'Backendless'];
+	function Ministry($q, $http, Backendless) {
 		
 		return {
-			all: function() {
-				return ministries;
+			all: (params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				Backendless.request('data.ministry@get', params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
 			},
-			get: function(ministryId) {
-				return ministries.find(function(ministry) {
-					return ministry.id === parseInt(ministryId);
-				});
+			get: (id, params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				Backendless.request('data.ministry@get@' + id, params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
+			},
+			getBy: (model, data, params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				params.where = 'deleted is null and ' + model + '=\'' + data + '\'';
+				Backendless.request('data.ministry@get', params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
 			}
 		};
+
 	}
 })(angular);

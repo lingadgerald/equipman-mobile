@@ -98,6 +98,15 @@
 						(res) => deferred.resolve(res.data),
 						(err) => deferred.reject(err.data)
 					);
+
+					// promise.success = (data) => {
+					// 	promise.then(data);
+					// 	return promise;
+					// };
+					// promise.error = (data) => {
+					// 	promise.then(null, data);
+					// 	return promise;
+					// };
 					return promise;
 				}
 			} // End

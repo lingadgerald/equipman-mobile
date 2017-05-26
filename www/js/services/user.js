@@ -59,6 +59,16 @@
 					deferred.reject(err);
 				});
 				return promiser(promise);
+			},
+			getTable: (resource, params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				Backendless.request(resource + '@get', params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
 			}
 		}
 	}

@@ -1,8 +1,7 @@
 (function (ng) {
 	'use strict';
 
-	ng.module('directives').run(runBlock).config(configBlock)
-	;
+	ng.module('directives').run(runBlock).config(configBlock);
 
 	runBlock.$inject = [];
 	function runBlock() {
@@ -57,6 +56,12 @@
 				'</label>'
 			].join(' '),
       controller: 'FormlySelectCtrl as fn'
+		});
+
+		formlyConfigProvider.setType({
+			name: 'select-modal',
+			templateUrl: 'templates/others/modal-select.html',
+			controller: 'ModalSelectCtrl as vm'
 		});
 	}
 })(angular);

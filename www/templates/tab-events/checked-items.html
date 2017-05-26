@@ -1,0 +1,75 @@
+<ion-view title="Items">
+	<ion-nav-buttons side="right" class="has-header">
+    <button class="button button-positive icon ion-android-send"></button>
+    <button
+      class="button button-positive icon ion-android-funnel"
+      modal-select
+      modal-title="Sort items by"
+      ng-model="vm.conditions.sortBy"
+      options="vm.sortItems"
+      option-getter="vm.handleOptionGetter(option)"
+      on-select="vm.handleOnSort()"
+    >
+      <div class="option">{{option.title}}</div>
+    </button>
+  </ion-nav-buttons>
+  <div class="bar bar-subheader">
+  	<div class="button-bar">
+  		<button
+  			class="button button-dark"
+  			style="border-radius: 0px 0px 0px 0px;"
+  			ng-click="vm.handleOnChangeCheck('in');"
+  			ng-class="{
+  				'button-active': vm.check === 'in',
+  				'button-inactive': vm.check !== 'in',
+  				'button-outline': vm.check !== 'in'
+  			}"
+  		>
+  			Check In
+  		</button>
+  		<button
+  			class="button button-dark"
+  			style="border-radius: 0px 0px 0px 0px;"
+  			ng-click="vm.handleOnChangeCheck('out');"
+  			ng-class="{
+  				'button-active': vm.check === 'out',
+  				'button-inactive': vm.check !== 'out',
+  				'button-outline': vm.check !== 'out',
+  			}"
+  		>
+  			Check Out
+  		</button>
+  	</div>
+  </div>
+  <ion-content class="has-header has-subheader">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="vm.handleOnRefresh()"
+    ></ion-refresher>
+
+  	<ion-list>
+  		<ion-item class="item-divider">Items to check {{vm.check}}</ion-item>
+  		<ion-item
+        class="item-thumbnail-left item-icon-right"
+        collection-repeat="item in vm.list"
+        on-swipe="vm.handleOnSwipe($event, vm.check, item)"
+        ui-sref="tab.events.ministries.items.details({ itemId: item.objectId })"
+      >
+        <img ng-src="{{item.image || 'img/no_image.png'}}" alt="Item image">
+  			<h2>{{item.name}}</h2>
+        <p>{{item.itemId}}</p>
+  			<p>{{vm.getOwnerName(item)}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+  		</ion-item>
+      <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">
+        No items to check {{vm.check}}
+      </ion-item>
+  	</ion-list>
+
+    <ion-infinite-scroll
+      ng-if="vm.loadMoreData"
+      on-infinite="vm.handleOnInfiniteScroll()"
+      distance="1%"
+    ></ion-infinite-scroll>
+  </ion-content>
+</ion-view>
