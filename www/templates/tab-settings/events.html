@@ -1,16 +1,9 @@
-<ion-view view-title="Ministries" hide-back-button="true">
-  <ion-nav-buttons side="primary">
-    <button
-      ng-if="vm.isAdmin"
-      class="button button-positive icon ion-plus"
-      ui-sref="ministry-item-add"
-    ></button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="secondary">
+<ion-view view-title="Events">
+  <ion-nav-buttons side="secondary" class="has-header">
     <button
       class="button button-positive icon ion-android-funnel"
       modal-select
-      modal-title="Sort ministries by"
+      modal-title="Sort events by"
       ng-model="vm.conditions.sortBy"
       options="vm.sortItems"
       option-getter="vm.handleOptionGetter(option)"
@@ -27,11 +20,11 @@
 
     <ion-list>
       <ion-item
-        class="item-icon-right"
-        collection-repeat="item in vm.list"
+      	class="item-icon-right"
+      	collection-repeat="item in vm.list"
         collection-item-width="'100%'"
         collection-item-height="vm.getItemHeight(item, $index)"
-        ui-sref="tab.ministries.items({ ministryId: item.objectId })"
+      	ui-sref="tab.settings.events.items({ eventId: item.objectId })"
         ng-style="{ height: getItemHeight(item, $index) }"
       >
         <h2>{{item.name}}</h2>
@@ -39,7 +32,7 @@
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">
-        No ministries
+        No events
       </ion-item>
     </ion-list>
 

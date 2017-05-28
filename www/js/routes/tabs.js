@@ -37,11 +37,6 @@
 						templateUrl: 'templates/tab-settings/app.html',
 						controller: 'TabSettingCtrl as vm'
 					}
-				},
-				resolve: {
-					SettingsData: (MainService) => {
-						return MainService.getData({ name: 'profile', group: 'app' });
-					}
 				}
 			}
 		};

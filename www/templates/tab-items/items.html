@@ -23,15 +23,15 @@
 
     <ion-list>
       <ion-item
-        class="item-icon-right"
+        class="item-thumbnail-left item-icon-right"
         collection-repeat="item in vm.list"
         collection-item-width="'100%'"
-        collection-item-height="vm.getItemHeight(item, $index)"
         ui-sref="tab.ministries.items.details({ itemId: item.objectId })"
-        ng-style="{ height: getItemHeight(item, $index) }"
       >
+        <img ng-src="{{item.image || 'img/no_image.png'}}" alt="Item image">
         <h2>{{item.name}}</h2>
         <p>{{item.itemId}}</p>
+        <p>{{vm.getOwnerName(item)}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">

@@ -5,7 +5,6 @@
 
 	ItemFormsCtrl.$inject = [
 		'$ionicHistory',
-		'$ionicPopup',
 		'$rootScope',
 		'$stateParams',
 		'$scope',
@@ -15,7 +14,6 @@
 	];
 	function ItemFormsCtrl(
 		$ionicHistory,
-		$ionicPopup,
 		$rootScope,
 		$stateParams,
 		$scope,
@@ -25,7 +23,6 @@
 	) {
 		var vm = this;
 		vm.$ionicHistory = $ionicHistory;
-		vm.$ionicPopup = $ionicPopup;
 		vm.$rootScope = $rootScope;
 		vm.$stateParams = $stateParams;
 		vm.$scope = $scope;
@@ -57,10 +54,7 @@
 				vm.model = ng.copy(res);
 				vm.fields = vm.getFormFields();
 			}).catch((err) => {
-				vm.$ionicPopup.alert({
-					title: 'Something went wrong!',
-					template: 'Please try again later'
-				});
+				vm.$rootScope.$broadcast('alert-error:show');
 			}).finally(() => {
 				vm.$rootScope.$broadcast('loading:hide');
 			});
@@ -77,6 +71,9 @@
 				templateOptions: {
 					label: 'Image',
 					placeholder: 'Image'
+				},
+				expressionProperties: {
+					'templateOptions.disabled': 'formState.readOnly'
 				}
 			},
 			{
@@ -116,6 +113,9 @@
 							where: 'deleted is null'
 						}
 					}
+				},
+				expressionProperties: {
+					'templateOptions.disabled': 'formState.readOnly'
 				}
 			},
 			{
@@ -128,6 +128,9 @@
 						{name: 'Member', value: 'member'}
 					],
 					required: true
+				},
+				expressionProperties: {
+					'templateOptions.disabled': 'formState.readOnly'
 				}
 			},
 			{
@@ -144,7 +147,10 @@
 					},
 					required: true
 				},
-				hideExpression: '!(model.ownerVal === \'member\')'
+				hideExpression: '!(model.ownerVal === \'member\')',
+				expressionProperties: {
+					'templateOptions.disabled': 'formState.readOnly'
+				}
 			},
 			{
 				key: 'ownerMinistry',
@@ -160,7 +166,10 @@
 					},
 					required: true
 				},
-				hideExpression: '!(model.ownerVal === \'ministry\')'
+				hideExpression: '!(model.ownerVal === \'ministry\')',
+				expressionProperties: {
+					'templateOptions.disabled': 'formState.readOnly'
+				}
 			},
 			{
 				key: 'condition',
@@ -189,15 +198,6 @@
 		];
 	};
 
-	ItemFormsCtrl.prototype.getItemHeight = function(item, index) {
-		return 75;
-	};
-
-	ItemFormsCtrl.prototype.handleOptionGetter = function(option) {
-		var vm = this;
-		return option.model + ' ' + (!vm.sortReversed ? 'asc' : 'desc');
-	};
-
 	ItemFormsCtrl.prototype.handleOnCancel = function() {
 		var vm = this;
 		vm.model = {};
@@ -212,6 +212,54 @@
 
 	ItemFormsCtrl.prototype.handleOnSubmit = function() {
 		var vm = this;
-		console.log('handleOnSubmit:', vm.model);
+		var model = ng.copy(vm.model);
+		var resource = 'data.item@post';
+		vm.options.formState.readOnly = true;
+		vm.$rootScope.$broadcast('loading:show');
+
+		ng.forEach(model, (val, key) => {
+			if (key === 'image') {
+				model.image = new Date().getTime() + (('_' + val.filename) || '.jpg');
+				model.base64Image = val.base64;
+			}
+		});
+
+		model.code = model.name.trim().underscore();
+		if (model.ownerVal === 'member' && model.ownerMinistry != null) {
+			model.ownerMinistry = null;
+		} else if (model.ownerVal === 'ministry' && model.ownerMember != null) {
+			model.ownerMember = null;
+		}
+		
+		if (model.image != null) {
+			var resourceImg = 'file.image@put@{image}'.format(model);
+			var headers = { 'Content-Type': 'text/plain' };
+			vm.Item.save(resourceImg, model.base64Image, headers).then((res) => {
+				console.log('image saved:', res);
+				model.image = res;
+				delete model.base64Image;
+				return vm.Item.save(resource, model);
+			}).then((res) => {
+				console.log('item saved:', res);
+				vm.handleOnCancel();
+			}).catch((err) => {
+				vm.$rootScope.$broadcast('alert-error:show');
+			}).finally(() => {
+				vm.options.formState.readOnly = false;
+				vm.$rootScope.$broadcast('loading:hide');
+			});
+		} else {
+			vm.Item.save(resource, model).then((res) => {
+				console.log('item saved:', res);
+				vm.handleOnCancel();
+			}).catch((err) => {
+				vm.$rootScope.$broadcast('alert-error:show');
+			}).finally(() => {
+				vm.options.formState.readOnly = false;
+				vm.$rootScope.$broadcast('loading:hide');
+			});
+		}
+
+		console.log('handleOnSubmit:', model);
 	};
 })(angular);

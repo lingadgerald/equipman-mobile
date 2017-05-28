@@ -24,14 +24,20 @@
     '$ionicHistory',
     '$ionicPopup',
     '$ionicLoading',
-    '$rootScope'
+    '$rootScope',
+    '$localStorage',
+    '$state',
+    'ionicToast'
   ];
   function runBlock(
     $ionicPlatform,
     $ionicHistory,
     $ionicPopup,
     $ionicLoading,
-    $rootScope
+    $rootScope,
+    $localStorage,
+    $state,
+    ionicToast
   ) {
     $ionicPlatform.ready(() => {
       // Hide the accessory bar by default (remove this to show
@@ -78,9 +84,44 @@
       $ionicLoading.hide();
     });
 
+    var errorMessageEvent = $rootScope.$on('alert-error:show', (ev) => {
+      ev.preventDefault();
+      $ionicPopup.alert({
+        title: 'Something went wrong!',
+        template: 'Please try again later'
+      });
+    });
+
+    var toastEvent = $rootScope.$on('toast:show', (ev, args) => {
+      ev.preventDefault();
+      ionicToast.show(args.message, args.position || 'top', false, 3500);
+    });
+
+    var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', (ev, toState) => {
+      var userToken = $localStorage['user-token'], code = null;
+      if (toState != null) { code = toState.name.split('.')[0]; }
+      if (code === 'login' && userToken != null) {
+        ev.preventDefault();
+        $state.go('tab.events');
+      }
+      if ((code === 'tab' ||
+          code === 'ministry-item-add' ||
+          code === 'setting-profile-edit' ||
+          code === 'setting-profile-changepassword' ||
+          code === 'event-ministry-items-send'
+        ) && userToken == null
+      ) {
+        ev.preventDefault();
+        $state.go('login');
+      }
+    });
+
     $rootScope.$on('destroy', () => {
       loadingShowEvent();
       loadingHideEvent();
+      errorMessageEvent();
+      toastEvent();
+      stateChangeStartEvent();
     });
   }
 

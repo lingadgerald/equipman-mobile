@@ -1,11 +1,40 @@
 <ion-view title="Items">
-	<ion-nav-buttons side="right" class="has-header">
-    <button class="button button-positive icon ion-android-send"></button>
+  <ion-nav-buttons side="primary" class="has-header">
+    <button
+      class="button button-clear"
+      ng-if="vm.check === 'out'"
+      ng-disabled="vm.check !== 'out' || !vm.lsEventItems"
+      ui-sref="event-ministry-items-send({
+        ministryId: vm.ministry.objectId,
+        eventId: vm.event.objectId
+      })"
+    >
+      Send
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="secondary" class="has-header">
+    <button
+      class="button button-positive icon"
+      ng-if="vm.check === 'out'"
+      ng-class="{
+        'ion-android-person': vm.platform === 'android',
+        'ion-ios-person': vm.platform === 'ios',
+        'ion-person': vm.platform !== 'android' && vm.platform !== 'ios'
+      }"
+      modal-select
+      modal-title="Send"
+      ng-model="vm.userBy"
+      options="vm.userItems"
+      option-getter="vm.handleOptionGetterUser(option)"
+      on-select="vm.handleOnAssignUser()"
+    >
+      <div class="option">{{option.name}}</div>
+    </button>
     <button
       class="button button-positive icon ion-android-funnel"
       modal-select
       modal-title="Sort items by"
-      ng-model="vm.conditions.sortBy"
+      ng-model="vm.sortBy"
       options="vm.sortItems"
       option-getter="vm.handleOptionGetter(option)"
       on-select="vm.handleOnSort()"
@@ -41,7 +70,8 @@
   		</button>
   	</div>
   </div>
-  <ion-content class="has-header has-subheader">
+
+  <ion-content class="has-header has-subheader has-footer">
     <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="vm.handleOnRefresh()"
@@ -51,14 +81,23 @@
   		<ion-item class="item-divider">Items to check {{vm.check}}</ion-item>
   		<ion-item
         class="item-thumbnail-left item-icon-right"
-        collection-repeat="item in vm.list"
+        collection-repeat="item in vm.list | orderBy:vm.sortBy"
         on-swipe="vm.handleOnSwipe($event, vm.check, item)"
-        ui-sref="tab.events.ministries.items.details({ itemId: item.objectId })"
       >
         <img ng-src="{{item.image || 'img/no_image.png'}}" alt="Item image">
   			<h2>{{item.name}}</h2>
         <p>{{item.itemId}}</p>
   			<p>{{vm.getOwnerName(item)}}</p>
+        <span
+          class="item-note"
+          ng-if="!!vm.getItemLog(item).checkedOutBy"
+          ng-class="{
+            'energized': !vm.getItemLog(item).confirm,
+            'balanced': vm.getItemLog(item).confirm
+          }"
+        >
+          {{vm.getItemLog(item).checkedOutBy}}
+        </span>
         <i class="icon ion-chevron-right icon-accessory"></i>
   		</ion-item>
       <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">
@@ -72,4 +111,15 @@
       distance="1%"
     ></ion-infinite-scroll>
   </ion-content>
+
+  <ion-footer-bar
+    align-title="left"
+    class="bar-footer bar-light"
+    ng-if="vm.check === 'out'"
+  >
+    <h2 class="title">Assigned: {{vm.userBy.name || 'You'}}</h2>
+    <button
+      class="button button-icon icon ion-ios-empty"
+      ></button>
+  </ion-footer-bar>
 </ion-view>

@@ -137,10 +137,10 @@
 				if (!!attatchment) { obj.attatchment = attatchment; }
 
 				request('send.email@post', obj).then((res) => {
-					console.log('send email success:', success);
+					console.log('send email success:', res);
 					deferred.resolve(res);
 				}, (err) => {
-					console.log('send email error:', error);
+					console.log('send email error:', err);
 					deferred.reject(err);
 				});
 				return promise;

@@ -42,10 +42,7 @@
 			vm.item = res;
 			vm.fields = vm.getFormFields(res);
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			});
+			vm.$rootScope.$broadcast('alert-error:show');
 		}).finally(() => {
 			vm.$rootScope.$broadcast('loading:hide');
 		});
@@ -71,55 +68,6 @@
 		];
 	};
 
-	ItemDetailsCtrl.prototype.getFormFields1 = function() {
-		return [{
-			key: 'name',
-			type: 'stacked-input',
-			templateOptions: {
-				type: 'text',
-				label: 'Name',
-				placeholder: 'Name',
-				required: true
-			},
-			expressionProperties: {
-				'templateOptions.disabled': 'formState.readOnly'
-			}
-		}, {
-			key: 'itemId',
-			type: 'stacked-input',
-			templateOptions: {
-				type: 'text',
-				label: 'Item Id',
-				placeholder: 'Item Id'
-			},
-			expressionProperties: {
-				'templateOptions.disabled': 'formState.readOnly'
-			}
-		}, {
-			key: 'condition',
-			type: 'stacked-input',
-			templateOptions: {
-				type: 'text',
-				label: 'Condition',
-				placeholder: 'Condition'
-			},
-			expressionProperties: {
-				'templateOptions.disabled': 'formState.readOnly'
-			}
-		}, {
-			key: 'description',
-			type: 'stacked-input',
-			templateOptions: {
-				type: 'text',
-				label: 'Description',
-				placeholder: 'Description'
-			},
-			expressionProperties: {
-				'templateOptions.disabled': 'formState.readOnly'
-			}
-		}];
-	};
-
 	ItemDetailsCtrl.prototype.getItemHeight = function(item, index) {
 		return 75;
 	};
@@ -130,10 +78,7 @@
 		vm.Item.get(vm.$stateParams.itemId, vm.conditions).then((res) => {
 			vm.item = res;
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			});
+			vm.$rootScope.$broadcast('alert-error:show');
 		}).finally(() => {
 			vm.$scope.$broadcast('scroll.refreshComplete');
 		});

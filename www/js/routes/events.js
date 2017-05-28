@@ -24,12 +24,19 @@
 						controller : 'CheckedItemsCtrl as vm'
 					}
 				}
+			},
+			sendItem: {
+				url 			 : '/tab/events/:eventId/ministries/:ministryId/items/send',
+				cache 		 : false,
+				templateUrl: baseUrl + '/send-items.html',
+				controller : 'SendItemsCtrl as vm'
 			}
 		};
 
 		$stateProvider
 			.state('tab.events.ministries', events.ministry)
 			.state('tab.events.ministries.items', events.ministryItem)
+			.state('event-ministry-items-send', events.sendItem)
 		;
 	}
 })(angular);

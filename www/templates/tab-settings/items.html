@@ -1,17 +1,10 @@
-<ion-view view-title="Ministries" hide-back-button="true">
-  <ion-nav-buttons side="primary">
-    <button
-      ng-if="vm.isAdmin"
-      class="button button-positive icon ion-plus"
-      ui-sref="ministry-item-add"
-    ></button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="secondary">
+<ion-view view-title="Items To Check Out">
+  <ion-nav-buttons side="secondary" class="has-header">
     <button
       class="button button-positive icon ion-android-funnel"
       modal-select
-      modal-title="Sort ministries by"
-      ng-model="vm.conditions.sortBy"
+      modal-title="Sort items by"
+      ng-model="vm.sortBy"
       options="vm.sortItems"
       option-getter="vm.handleOptionGetter(option)"
       on-select="vm.handleOnSort()"
@@ -19,7 +12,10 @@
       <div class="option">{{option.title}}</div>
     </button>
   </ion-nav-buttons>
-  <ion-content class="has-header">
+  <div class="bar bar-subheader bar-stable">
+    <h2 class="title" style="text-align: left;">{{vm.event.name}}</h2>
+  </div>
+  <ion-content class="has-header has-subheader">
     <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="vm.handleOnRefresh()"
@@ -27,19 +23,22 @@
 
     <ion-list>
       <ion-item
-        class="item-icon-right"
-        collection-repeat="item in vm.list"
+        class="item-thumbnail-left item-icon-right"
+        collection-repeat="item in vm.list | orderBy:vm.sortBy"
         collection-item-width="'100%'"
-        collection-item-height="vm.getItemHeight(item, $index)"
-        ui-sref="tab.ministries.items({ ministryId: item.objectId })"
-        ng-style="{ height: getItemHeight(item, $index) }"
+        on-swipe="vm.handleOnSwipe($event, item)"
       >
+        <img ng-src="{{item.image || 'img/no_image.png'}}" alt="Item image">
         <h2>{{item.name}}</h2>
-        <p>{{item.description}}</p>
+        <p>{{item.itemId}}</p>
+        <p>{{vm.getOwnerName(item)}}</p>
+        <span class="item-note balanced" ng-if="vm.getItemLog(item).confirm">
+          {{vm.getItemLog(item).checkedOutBy}}
+        </span>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
       <ion-item ng-if="vm.list.length === 0 && !ctrl.loadMoreData">
-        No ministries
+        No items to check out
       </ion-item>
     </ion-list>
 

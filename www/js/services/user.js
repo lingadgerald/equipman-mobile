@@ -19,9 +19,26 @@
 		};
 		
 		return {
+			all: (params) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				Backendless.request('data.member@get', params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
+			},
 			currentUser: (user) => {
 				if (!!user) { $localStorage['_equipman_mobile_user'] = user; }
 				return $localStorage['_equipman_mobile_user'];
+			},
+			currentUserRole: () => {
+				var currentUser = $localStorage['_equipman_mobile_user'];
+				if (currentUser != null && currentUser.role != null) {
+					return currentUser.role.code;
+				}
+				return null;
 			},
 			login: (data) => {
 				var deferred = $q.defer(),
@@ -65,6 +82,16 @@
 				var promise = deferred.promise;
 				if (params == null) { params = {}; }
 				Backendless.request(resource + '@get', params).then(
+					(res) => deferred.resolve(res),
+					(err) => deferred.reject(err)
+				);
+				return promise;
+			},
+			save: (resource, params, headers) => {
+				var deferred = $q.defer();
+				var promise = deferred.promise;
+				if (params == null) { params = {}; }
+				Backendless.request(resource, params, headers).then(
 					(res) => deferred.resolve(res),
 					(err) => deferred.reject(err)
 				);

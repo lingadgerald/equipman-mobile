@@ -7,20 +7,25 @@
 		'$ionicPopup',
 		'$rootScope',
 		'$scope',
+		'User',
 		'Ministry'
 	];
 	function TabItemCtrl(
 		$ionicPopup,
 		$rootScope,
 		$scope,
+		User,
 		Ministry
 	) {
 		var vm = this;
 		vm.$ionicPopup = $ionicPopup;
 		vm.$rootScope = $rootScope;
 		vm.$scope = $scope;
+		vm.User = User;
 		vm.Ministry = Ministry;
 
+		vm.currentUserRole = User.currentUserRole();
+		vm.isAdmin = (vm.currentUserRole === 'admin' || vm.currentUserRole === 'head');
 		vm.list = [];
 		vm.loadMoreData = true;
 		vm.sortReversed = false;
@@ -56,10 +61,8 @@
 				vm.loadMoreData = false;
 			}
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			}).then(() => vm.loadMoreData = false);
+			vm.$rootScope.$broadcast('alert-error:show');
+			vm.loadMoreData = false;
 		}).finally(() => {
 			vm.$scope.$broadcast('scroll.refreshComplete');
 		});
@@ -77,10 +80,8 @@
 				vm.loadMoreData = false;
 			}
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			}).then(() => vm.loadMoreData = false);
+			vm.$rootScope.$broadcast('alert-error:show');
+			vm.loadMoreData = false;
 		}).finally(() => {
 			vm.$scope.$broadcast('scroll.infiniteScrollComplete');
 		});

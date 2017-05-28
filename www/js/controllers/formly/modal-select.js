@@ -3,10 +3,10 @@
 
 	ng.module('controllers').controller('ModalSelectCtrl', ModalSelectCtrl);
 
-	ModalSelectCtrl.$inject = ['$ionicPopup', '$scope', 'User'];
-	function ModalSelectCtrl($ionicPopup, $scope, User) {
+	ModalSelectCtrl.$inject = ['$rootScope', '$scope', 'User'];
+	function ModalSelectCtrl($rootScope, $scope, User) {
 		var vm = this;
-		vm.$ionicPopup = $ionicPopup;
+		vm.$rootScope = $rootScope;
 		vm.User = User;
 		vm.options = $scope.options;
 		vm.to = $scope.to;
@@ -32,6 +32,7 @@
 	ModalSelectCtrl.prototype.getData = function() {
 		var vm = this;
 		var op = vm.to.optionProperties;
+		vm.$rootScope.$broadcast('loading:show');
 		vm.User.getTable(op.resource, op.conditions).then((res) => {
 			ng.forEach(res.data, (val) => {
 				vm.to.options.push({
@@ -46,12 +47,10 @@
 				vm.loadMoreData = false;
 			}
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			});
+			vm.$rootScope.$broadcast('alert-error:show');
 			vm.loadMoreData = false;
 		}).finally(() => {
+			vm.$rootScope.$broadcast('loading:hide');
 			vm.$scope.$broadcast('scroll.infiniteScrollComplete');
 		});
 	};

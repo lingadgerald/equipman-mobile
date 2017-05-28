@@ -1,17 +1,4 @@
 <ion-view view-title="{{vm.item.name}}">
-  <ion-nav-buttons side="secondary" class="has-header">
-    <button
-      class="button button-positive icon ion-android-funnel"
-      modal-select
-      modal-title="Sort items by"
-      ng-model="vm.conditions.sortBy"
-      options="vm.sortItems"
-      option-getter="vm.handleOptionGetter(option)"
-      on-select="vm.handleOnSort()"
-    >
-      <div class="option">{{option.title}}</div>
-    </button>
-  </ion-nav-buttons>
   <ion-content class="has-header">
     <ion-refresher
       pulling-text="Pull to refresh..."
@@ -20,7 +7,7 @@
 
     <ion-list>
       <ion-item class="text-center">
-        <img ng-src="{{item.image || 'img/no_image.png'}}" alt="Item image" width="50%">
+        <img ng-src="{{vm.item.image || 'img/no_image.png'}}" alt="Item image" width="50%">
       </ion-item>
       <label class="item item-input item-stacked-label" collection-repeat="item in vm.fields">
         <span class="input-label">{{item.label}}</span>

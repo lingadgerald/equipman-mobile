@@ -1,0 +1,27 @@
+<ion-view view-title="Send SMS to">
+  <ion-nav-buttons side="primary" class="has-header">
+    <button
+      class="button button-clear"
+      ng-click="vm.handleOnCancel()"
+    >
+      Cancel
+    </button>
+  </ion-nav-buttons>
+  <div class="bar bar-subheader bar-stable">
+    <h2 class="title" style="text-align: left;">{{vm.event.name}}</h2>
+  </div>
+  <ion-content class="has-header has-subheader">
+
+    <ion-list>
+      <ion-item
+        href=""
+        class=""
+        collection-repeat="item in vm.list"
+        ng-click="vm.handleItemClicked(item)"
+      >
+        {{item.label}}
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+</ion-view>

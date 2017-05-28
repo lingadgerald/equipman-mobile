@@ -55,10 +55,7 @@
 			vm.ministry = res;
 			vm.loadMoreData = true;
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			});
+			vm.$rootScope.$broadcast('alert-error:show');
 		}).finally(() => {
 			vm.$rootScope.$broadcast('loading:hide');
 		});
@@ -66,6 +63,16 @@
 
 	ItemsCtrl.prototype.getItemHeight = function(item, index) {
 		return 75;
+	};
+
+	ItemsCtrl.prototype.getOwnerName = function(item) {
+		var vm = this, owner = null;
+		if (item.ownerVal === 'ministry' && item.ownerMinistry != null) {
+			owner = item.ownerMinistry.name;
+		} else if (item.ownerVal === 'member' && item.ownerMember != null) {
+			owner = item.ownerMember.name;
+		}
+		return owner;
 	};
 
 	ItemsCtrl.prototype.handleOnRefresh = function() {
@@ -83,10 +90,8 @@
 				vm.loadMoreData = false;
 			}
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			}).then(() => vm.loadMoreData = false);
+			vm.$rootScope.$broadcast('alert-error:show');
+			vm.loadMoreData = false;
 		}).finally(() => {
 			vm.$scope.$broadcast('scroll.refreshComplete');
 		});
@@ -104,10 +109,8 @@
 				vm.loadMoreData = false;
 			}
 		}).catch((err) => {
-			vm.$ionicPopup.alert({
-				title: 'Something went wrong!',
-				template: 'Please try again later'
-			}).then(() => vm.loadMoreData = false);
+			vm.$rootScope.$broadcast('alert-error:show');
+			vm.loadMoreData = false;
 		}).finally(() => {
 			vm.$scope.$broadcast('scroll.infiniteScrollComplete');
 		});
