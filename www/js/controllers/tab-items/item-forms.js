@@ -82,8 +82,7 @@
 				templateOptions: {
 					type: 'text',
 					label: 'Name',
-					placeholder: 'Name',
-					required: true
+					placeholder: 'Name'
 				},
 				expressionProperties: {
 					'templateOptions.disabled': 'formState.readOnly'
@@ -126,8 +125,7 @@
 					options: [
 						{name: 'Ministry', value: 'ministry'},
 						{name: 'Member', value: 'member'}
-					],
-					required: true
+					]
 				},
 				expressionProperties: {
 					'templateOptions.disabled': 'formState.readOnly'
@@ -144,8 +142,7 @@
 						conditions: {
 							where: 'deleted is null'
 						}
-					},
-					required: true
+					}
 				},
 				hideExpression: '!(model.ownerVal === \'member\')',
 				expressionProperties: {
@@ -163,8 +160,7 @@
 						conditions: {
 							where: 'deleted is null'
 						}
-					},
-					required: true
+					}
 				},
 				hideExpression: '!(model.ownerVal === \'ministry\')',
 				expressionProperties: {
@@ -215,7 +211,6 @@
 		var model = ng.copy(vm.model);
 		var resource = 'data.item@post';
 		vm.options.formState.readOnly = true;
-		vm.$rootScope.$broadcast('loading:show');
 
 		if (model.name == null) {
 			vm.$rootScope.$broadcast('toast:show', {message: 'Please enter a name'});
@@ -223,9 +218,12 @@
 			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a ministry'});
 		} else if (model.ownerVal === 'ministry' && model.ownerMinistry == null) {
 			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a ministry owner'});
+		} else if (model.ownerVal == null) {
+			vm.$rootScope.$broadcast('toast:show', {message: 'Please select an owner'});
 		} else if (model.ownerVal === 'member' && model.ownerMember == null) {
 			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a member owner'});
 		} else {
+			vm.$rootScope.$broadcast('loading:show');
 			ng.forEach(model, (val, key) => {
 				if (key === 'image') {
 					model.image = new Date().getTime() + (('_' + val.filename) || '.jpg');
