@@ -112,9 +112,27 @@
 				vm.buildSMS();
 				break;
 			case 'both':
+				vm.sendBoth();
 				break;
 			default: break;
 		}
+	};
+
+	SendItemsCtrl.prototype.sendEmail = function() {
+		var vm = this;
+		vm.$rootScope.$broadcast('loading:show');
+		vm.Item.sendEmail(vm.lsEventItems, vm.event.name, vm.currentUser).then((res) => {
+			vm.$ionicPopup({
+				title: 'Success',
+				template: 'Email successfully sent'
+			}).then((res) => {
+				vm.handleOnCancel();
+			});
+		}).catch((err) => {
+			vm.$rootScope.$broadcast('alert-error:show');
+		}).finally(() => {
+			vm.$rootScope.$broadcast('loading:hide');
+		});
 	};
 
 	SendItemsCtrl.prototype.buildSMS = function() {
@@ -185,18 +203,21 @@
 		})
 	};
 
-	SendItemsCtrl.prototype.sendEmail = function() {
+	SendItemsCtrl.prototype.sendBoth = function() {
 		var vm = this;
 		vm.$rootScope.$broadcast('loading:show');
 		vm.Item.sendEmail(vm.lsEventItems, vm.event.name, vm.currentUser).then((res) => {
+			vm.$rootScope.$broadcast('loading:hide');
 			vm.$ionicPopup({
 				title: 'Success',
 				template: 'Email successfully sent'
+			}).then((res) => {
+				vm.buildSMS();
 			});
 		}).catch((err) => {
 			vm.$rootScope.$broadcast('alert-error:show');
 		}).finally(() => {
-			vm.$rootScope.$broadcast('loading:hide');
+			// vm.$rootScope.$broadcast('loading:hide');
 		});
 	};
 })(angular);
