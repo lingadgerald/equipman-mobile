@@ -54,7 +54,10 @@
     });
 
     $ionicPlatform.registerBackButtonAction((ev) => {
-      if (false) {
+      if ($state.current.name === 'login' ||
+          $state.current.name === 'tab.events' ||
+          $state.current.name === 'tab.ministries'
+      ) {
         $ionicPopup.confirm({
           title     : 'Confirm Exit',
           template  : 'Are you sure you want to exit the application?',

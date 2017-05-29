@@ -217,49 +217,57 @@
 		vm.options.formState.readOnly = true;
 		vm.$rootScope.$broadcast('loading:show');
 
-		ng.forEach(model, (val, key) => {
-			if (key === 'image') {
-				model.image = new Date().getTime() + (('_' + val.filename) || '.jpg');
-				model.base64Image = val.base64;
-			}
-		});
-
-		model.code = model.name.trim().underscore();
-		if (model.ownerVal === 'member' && model.ownerMinistry != null) {
-			model.ownerMinistry = null;
-		} else if (model.ownerVal === 'ministry' && model.ownerMember != null) {
-			model.ownerMember = null;
-		}
-		
-		if (model.image != null) {
-			var resourceImg = 'file.image@put@{image}'.format(model);
-			var headers = { 'Content-Type': 'text/plain' };
-			vm.Item.save(resourceImg, model.base64Image, headers).then((res) => {
-				console.log('image saved:', res);
-				model.image = res;
-				delete model.base64Image;
-				return vm.Item.save(resource, model);
-			}).then((res) => {
-				console.log('item saved:', res);
-				vm.handleOnCancel();
-			}).catch((err) => {
-				vm.$rootScope.$broadcast('alert-error:show');
-			}).finally(() => {
-				vm.options.formState.readOnly = false;
-				vm.$rootScope.$broadcast('loading:hide');
-			});
+		if (model.name == null) {
+			vm.$rootScope.$broadcast('toast:show', {message: 'Please enter a name'});
+		} else if (model.ministry == null) {
+			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a ministry'});
+		} else if (model.ownerVal === 'ministry' && model.ownerMinistry == null) {
+			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a ministry owner'});
+		} else if (model.ownerVal === 'member' && model.ownerMember == null) {
+			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a member owner'});
 		} else {
-			vm.Item.save(resource, model).then((res) => {
-				console.log('item saved:', res);
-				vm.handleOnCancel();
-			}).catch((err) => {
-				vm.$rootScope.$broadcast('alert-error:show');
-			}).finally(() => {
-				vm.options.formState.readOnly = false;
-				vm.$rootScope.$broadcast('loading:hide');
+			ng.forEach(model, (val, key) => {
+				if (key === 'image') {
+					model.image = new Date().getTime() + (('_' + val.filename) || '.jpg');
+					model.base64Image = val.base64;
+				}
 			});
-		}
 
-		console.log('handleOnSubmit:', model);
+			model.code = model.name.trim().underscore();
+			if (model.ownerVal === 'member' && model.ownerMinistry != null) {
+				model.ownerMinistry = null;
+			} else if (model.ownerVal === 'ministry' && model.ownerMember != null) {
+				model.ownerMember = null;
+			}
+			
+			if (model.image != null) {
+				var resourceImg = 'file.image@put@{image}'.format(model);
+				var headers = { 'Content-Type': 'text/plain' };
+				vm.Item.save(resourceImg, model.base64Image, headers).then((res) => {
+					console.log('image saved:', res);
+					model.image = res;
+					delete model.base64Image;
+					return vm.Item.save(resource, model);
+				}).then((res) => {
+					console.log('item saved:', res);
+					vm.handleOnCancel();
+				}).catch((err) => {
+					vm.$rootScope.$broadcast('alert-error:show');
+				}).finally(() => {
+					vm.options.formState.readOnly = false;
+					vm.$rootScope.$broadcast('loading:hide');
+				});
+			} else {
+				vm.Item.save(resource, model).then((res) => {
+					console.log('item saved:', res);
+					vm.handleOnCancel();
+				}).catch((err) => {
+					vm.$rootScope.$broadcast('alert-error:show');
+				}).finally(() => {
+					vm.options.formState.readOnly = false;
+					vm.$rootScope.$broadcast('loading:hide');
+				});
+			}
+		} // end if
 	};
 })(angular);
