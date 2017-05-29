@@ -145,6 +145,8 @@
 				}
 			}
 		});
+		console.log(vm.$localStorage[vm.event.code]);
+		console.log(vm.$localStorage[vm.event.code] != null && vm.$localStorage[vm.event.code].length > 0);
 		vm.loadMoreData = false;
 	};
 
@@ -159,7 +161,8 @@
 			___class: option.___class,
 			objectId: option.objectId,
 			name: option.name,
-			email: option.email
+			email: option.email,
+			mobile: option.mobile
 		};
 	};
 
@@ -235,6 +238,7 @@
 					itemLog.checkedInAt = null;
 					itemLog.checkedInBy = null;
 					itemLog.checkedInEmail = null;
+					itemLog.checkedOutUser = null;
 
 					conditions.log = !logChecked;
 					message = ' was moved back to check in';
@@ -246,6 +250,14 @@
 					itemLog.checkedOutAt = null;
 					itemLog.checkedOutBy = null;
 					itemLog.checkedOutEmail = null;
+
+					// Pop items on perform email action
+					if (vm.$localStorage[vm.event.code] == null) { vm.$localStorage[vm.event.code] = []; }
+					var ls = vm.$localStorage[vm.event.code];
+					var lsIndex = ls.findIndex((val) => val.itemName === item.name);
+					if (lsIndex > -1) { ls.splice(lsIndex, 1); }
+					vm.$localStorage[vm.event.code] = ls;
+					// -----
 
 					conditions.log = logChecked;
 					message = ' cancelled check out';
@@ -349,13 +361,17 @@
 					var ls = vm.$localStorage[vm.event.code];
 					var owner = null, mobile = null, email = null, lsData = {};
 
-					if (item.ownerMember != null) {
-						owner = item.ownerMember.name;
-						email = item.ownerMember.email;
-						mobile = item.ownerMember.mobile;
-					} else if (item.ownerMinistry != null) {
-						owner = item.ownerMinistry.name;
-					}
+					// if (item.ownerMember != null) {
+					// 	owner = item.ownerMember.name;
+					// 	email = item.ownerMember.email;
+					// 	mobile = item.ownerMember.mobile;
+					// } else if (item.ownerMinistry != null) {
+					// 	owner = item.ownerMinistry.name;
+					// }
+
+					owner = vm.userBy.name;
+					email = vm.userBy.email;
+					mobile = vm.userBy.mobile;
 
 					lsData.itemName = item.name;
 					lsData.itemId = item.itemId;

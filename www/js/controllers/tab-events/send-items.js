@@ -122,7 +122,7 @@
 		var vm = this;
 		vm.$rootScope.$broadcast('loading:show');
 		vm.Item.sendEmail(vm.lsEventItems, vm.event.name, vm.currentUser).then((res) => {
-			vm.$ionicPopup({
+			vm.$ionicPopup.alert({
 				title: 'Success',
 				template: 'Email successfully sent'
 			}).then((res) => {
@@ -179,10 +179,18 @@
 		var vm = this, str = '';
 		vm.$rootScope.$broadcast('loading:show');
 		var options = { replaceLineBreaks: true, android: {intent: 'INTENT'} };
+		
+		// if (vm.cpObj[mobile] != null) {
+		// 	str = 'In event {name}, the items that I\'ve checked out using my phone are:'.format(vm.event);
+		// 	ng.forEach(vm.cpObj[mobile], (val) => {
+		// 		str += '\n{itemId}: {itemName} checked out by {coName}'.format(val);
+		// 	});
+		// }
+		
 		if (vm.cpObj[mobile] != null) {
-			str = 'In event {name}, the items that I\'ve checked out using my phone are:'.format(vm.event);
+			str = 'Please check out the following items in event {name}'.format(vm.event);
 			ng.forEach(vm.cpObj[mobile], (val) => {
-				str += '\n{itemId}: {itemName} checked out by {coName}'.format(val);
+				str += '\n{itemId}: {itemName}'.format(val);
 			});
 		}
 
@@ -208,7 +216,7 @@
 		vm.$rootScope.$broadcast('loading:show');
 		vm.Item.sendEmail(vm.lsEventItems, vm.event.name, vm.currentUser).then((res) => {
 			vm.$rootScope.$broadcast('loading:hide');
-			vm.$ionicPopup({
+			vm.$ionicPopup.alert({
 				title: 'Success',
 				template: 'Email successfully sent'
 			}).then((res) => {

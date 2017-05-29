@@ -3,7 +3,7 @@
     <button
       class="button button-clear"
       ng-if="vm.check === 'out'"
-      ng-disabled="vm.check !== 'out' || !vm.lsEventItems"
+      ng-disabled="vm.check !== 'out' || !(vm.$localStorage[vm.event.code] != null && vm.$localStorage[vm.event.code].length > 0)"
       ui-sref="event-ministry-items-send({
         ministryId: vm.ministry.objectId,
         eventId: vm.event.objectId

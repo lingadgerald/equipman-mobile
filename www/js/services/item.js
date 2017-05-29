@@ -83,8 +83,8 @@
 					}
 
 					temp = '<li>{itemId} - {itemName}';
-					if (val.name != null) { temp += ': {name}'; }
-					if (val.coName != null) { temp += ' checked out by {coName}'; }
+					// if (val.name != null) { temp += ': {name}'; }
+					// if (val.coName != null) { temp += ' checked out by {coName}'; }
 					temp += '</li>';
 					message.push(temp.format(val));
 				});
@@ -93,7 +93,8 @@
 
 				var htmlmessage = [
 					'Hello,<br><br>',
-					'In event {event}, the items that I\'ve checked out are:<br>'
+					// 'In event {event}, the items that I\'ve checked out are:<br>'
+					'Please check out the following items in event {event}'
 				].join(' ');
 				htmlmessage = htmlmessage.concat(message.join(' '));
 				htmlmessage += '<br>Sincerely, {name}<br>'.format(currentUser);
