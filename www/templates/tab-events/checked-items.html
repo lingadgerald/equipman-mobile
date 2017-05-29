@@ -71,7 +71,10 @@
   	</div>
   </div>
 
-  <ion-content class="has-header has-subheader has-footer">
+  <ion-content
+    class="has-header has-subheader"
+    ng-class="{'has-footer': vm.check === 'out'}"
+  >
     <ion-refresher
       pulling-text="Pull to refresh..."
       on-refresh="vm.handleOnRefresh()"

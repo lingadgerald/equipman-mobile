@@ -339,7 +339,7 @@
 				itemLog.checkedOutAt = model.checkedOutAt;
 				itemLog.checkedOutUser = vm.currentUser;
 
-				if (vm.userBy != null) {
+				if (!!vm.userBy) {
 					model.checkedOutBy = vm.userBy;
 					itemLog.checkedOutBy = vm.userBy.name;
 					itemLog.checkedOutEmail = vm.userBy.email;
