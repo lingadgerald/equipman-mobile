@@ -210,7 +210,6 @@
 		var vm = this;
 		var model = ng.copy(vm.model);
 		var resource = 'data.item@post';
-		vm.options.formState.readOnly = true;
 
 		if (model.name == null) {
 			vm.$rootScope.$broadcast('toast:show', {message: 'Please enter a name'});
@@ -223,6 +222,7 @@
 		} else if (model.ownerVal === 'member' && model.ownerMember == null) {
 			vm.$rootScope.$broadcast('toast:show', {message: 'Please select a member owner'});
 		} else {
+			vm.options.formState.readOnly = true;
 			vm.$rootScope.$broadcast('loading:show');
 			ng.forEach(model, (val, key) => {
 				if (key === 'image') {
