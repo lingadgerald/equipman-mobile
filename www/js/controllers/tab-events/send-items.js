@@ -188,7 +188,7 @@
 		// }
 		
 		if (vm.cpObj[mobile] != null) {
-			str = 'Please check out the following items in event {name}'.format(vm.event);
+			str = 'Please confirm if you checked out the ff. items from event {name}'.format(vm.event);
 			ng.forEach(vm.cpObj[mobile], (val) => {
 				str += '\n{itemId}: {itemName}'.format(val);
 			});

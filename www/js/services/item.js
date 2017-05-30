@@ -94,11 +94,23 @@
 				var htmlmessage = [
 					'Hello,<br><br>',
 					// 'In event {event}, the items that I\'ve checked out are:<br>'
-					'Please check out the following items in event {event}'
+					'Please confirm if you checked out the following items from event {event}'
 				].join(' ');
 				htmlmessage = htmlmessage.concat(message.join(' '));
+				htmlmessage += [
+					'To confirm, go to Equipman in your phone:',
+					'<ol>',
+						'<li>Make sure you are logged in.</li>',
+						'<li>Go to Setting tab.</li>',
+						'<li>Click Items To Confirm.</li>',
+						'<li>Choose the event.</li>',
+						'<li>Swipe right to confirm or swipe left to reject.</li>',
+					'</ol>'
+				].join('');
 				htmlmessage += '<br>Sincerely, {name}<br>'.format(currentUser);
 				obj.bodyparts.htmlmessage = htmlmessage.format({event: event});
+
+				console.log(obj.bodyparts.htmlmessage);
 
 				if (obj.to.length > 0) {
 					Backendless.sendEmail(obj.subject, obj.bodyparts, obj.to).then(
